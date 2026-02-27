@@ -3,130 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PTC Website - EarnTech</title>
+    <title>EarnTech - Secured PTC Platform</title>
     <style>
         :root { --primary: #2563eb; --success: #16a34a; --bg: #f3f4f6; }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; overflow: hidden; }
 
         /* Google Slide-up Panel (Vertical Half Screen) */
         #google-panel {
             position: fixed; bottom: -60%; left: 0; width: 100%; height: 50vh;
             background: white; border-top: 5px solid var(--primary);
-            z-index: 1000; transition: 0.5s ease;
+            z-index: 1000; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.15);
         }
         #google-panel.active { bottom: 0; }
-        .close-panel { position: absolute; top: 15px; right: 20px; font-size: 24px; color: red; cursor: pointer; }
+        .close-panel { position: absolute; top: 15px; right: 20px; font-size: 28px; color: #ff4444; cursor: pointer; font-weight: bold; }
 
-        /* Container */
-        .container { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        /* Container UI */
+        .container { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.08); position: relative; z-index: 10; }
+        .btn { display: block; width: 100%; padding: 14px; margin: 12px 0; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .btn-google { background: #ea4335; color: white; }
-        .btn-email { background: #333; color: white; }
-        .btn-submit { background: var(--success); color: white; }
-        .btn-back { background: #ddd; width: auto; font-size: 12px; padding: 5px 15px; margin-bottom: 10px; }
+        .btn-email { background: #1a1a1a; color: white; }
+        .btn-submit { background: var(--success); color: white; margin-top: 20px; }
+        .btn-back { background: #f0f0f0; width: auto; font-size: 13px; padding: 6px 16px; margin-bottom: 15px; border-radius: 20px; color: #555; }
         
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        .footer-text { font-size: 14px; color: #555; margin-top: 15px; }
-        .link { color: var(--primary); cursor: pointer; font-weight: bold; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; font-size: 15px; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1); }
+        
+        .footer-text { font-size: 14px; color: #666; margin-top: 20px; }
+        .link { color: var(--primary); cursor: pointer; font-weight: 700; text-decoration: none; }
         .hidden { display: none; }
         
-        #math-box { background: #f9f9f9; padding: 10px; border-radius: 5px; margin: 10px 0; font-weight: bold; }
+        #math-box { background: #f8fafc; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px dashed #cbd5e1; }
+        #math-ques { font-size: 18px; color: #334155; }
+
+        .g-recaptcha-badge { visibility: hidden; } /* reCAPTCHA লোগো হাইড করা (অপশনাল) */
     </style>
 </head>
 <body>
 
-    <!-- Bottom Google Panel -->
+    <!-- Bottom Google Authentication Panel -->
     <div id="google-panel">
         <span class="close-panel" onclick="toggleGoogle(false)">×</span>
-        <h3>Google Authentication</h3>
-        <p>Choose your account to continue</p>
-        <button class="btn btn-google" style="width: 80%" onclick="loginWithGoogle()">Continue with Google</button>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="40" alt="Google">
+        <h3 style="margin: 15px 0 5px;">Secure Login</h3>
+        <p style="color: #666; font-size: 14px;">Continue to your account securely</p>
+        <button class="btn btn-google" style="width: 80%" onclick="loginWithGoogle()">Sign in with Google</button>
     </div>
 
     <div class="container">
-        <!-- View 1: Login Main -->
+        <!-- View 1: Main Landing -->
         <div id="v-login">
-            <h2>Login</h2>
+            <h2 style="margin-bottom: 25px;">Welcome Back</h2>
             <button class="btn btn-google" onclick="toggleGoogle(true)">Login with Google</button>
             <button class="btn btn-email" onclick="show('v-email-login')">Login with Email</button>
             <p class="footer-text">do not any account, <span class="link" onclick="show('v-signup-main')">jast signup</span></p>
         </div>
 
-        <!-- View 2: Email Login -->
+        <!-- View 2: Email Login Form -->
         <div id="v-email-login" class="hidden">
             <button class="btn btn-back" onclick="show('v-login')">← Back</button>
             <h2>Email Login</h2>
-            <input type="email" id="log-email" placeholder="Enter your Email">
-            <input type="password" id="log-pass" placeholder="Enter your password">
-            <button class="btn btn-submit" onclick="handleEmailLogin()">Login</button>
+            <input type="email" id="log-email" placeholder="Email address">
+            <input type="password" id="log-pass" placeholder="Password">
+            <button class="btn btn-submit" onclick="handleEmailLogin()">Sign In</button>
             <p class="footer-text">do not any account, <span class="link" onclick="show('v-signup-main')">jast signup</span></p>
         </div>
 
         <!-- View 3: Signup Choice -->
         <div id="v-signup-main" class="hidden">
-            <h2>Signup</h2>
+            <h2>Create Account</h2>
             <button class="btn btn-google" onclick="prepSignup('Google')">Signup with Google</button>
             <button class="btn btn-email" onclick="prepSignup('Email')">Signup with Email</button>
             <p class="footer-text">I have olready account, <span class="link" onclick="show('v-login')">jast Login</span></p>
         </div>
 
-        <!-- View 4: Complete Signup -->
+        <!-- View 4: Detailed Signup Form -->
         <div id="v-signup-form" class="hidden">
             <button class="btn btn-back" onclick="show('v-signup-main')">← Back</button>
-            <h2 id="sup-title">Create Account</h2>
-            <input type="text" id="sup-name" placeholder="User Name">
-            <input type="text" id="sup-id" readonly placeholder="Unique ID">
+            <h2 id="sup-title">Join Us</h2>
+            <input type="text" id="sup-name" placeholder="Enter Full Name">
+            <input type="text" id="sup-id" readonly style="background: #f9f9f9; cursor: not-allowed;" placeholder="Generating Unique ID...">
             
             <div id="sup-email-fields" class="hidden">
-                <input type="email" id="sup-email" placeholder="Email">
+                <input type="email" id="sup-email" placeholder="Email Address">
                 <input type="password" id="sup-pass" placeholder="Password">
                 <input type="password" id="sup-conf" placeholder="Confirm Password">
             </div>
 
             <div id="math-box">
-                <span id="math-ques"></span>
-                <input type="number" id="math-ans" placeholder="Answer">
+                <div id="math-ques"></div>
+                <input type="number" id="math-ans" placeholder="Enter result">
             </div>
 
-            <button class="btn btn-submit" onclick="processSignup()">Signup</button>
+            <button class="btn btn-submit" onclick="processSignup()">Complete Signup</button>
             <p class="footer-text">I have olready account, <span class="link" onclick="show('v-login')">jast Login</span></p>
         </div>
 
-        <!-- View 5: Dashboard -->
+        <!-- View 5: Dashboard Demo -->
         <div id="v-dash" class="hidden">
-            <h2 style="color:var(--success)">Welcome!</h2>
-            <div style="text-align:left; background:#eee; padding:15px; border-radius:10px;">
+            <div style="background: #dcfce7; color: #166534; padding: 10px; border-radius: 8px; margin-bottom: 20px;">✓ Registration Successful!</div>
+            <h2>Dashboard</h2>
+            <div style="text-align:left; background:#f8fafc; padding:20px; border-radius:12px; border: 1px solid #e2e8f0;">
                 <p><b>Name:</b> <span id="d-name"></span></p>
-                <p><b>ID:</b> <span id="d-id"></span></p>
+                <p><b>User ID:</b> <span id="d-id" style="color: var(--primary); font-family: monospace; font-size: 18px;"></span></p>
             </div>
-            <button class="btn btn-email" onclick="location.reload()">Logout</button>
+            <button class="btn btn-email" onclick="location.reload()">Log Out</button>
         </div>
     </div>
 
+    <!-- Firebase Scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBvRdNBtvE5O9yAKSH1gILL2Hd19re-t7Q",
-            authDomain: "income-app-d691c.firebaseapp.com", // ঝামেলা ছাড়া এটিই রাখুন
+            authDomain: "open.earntech.raybil.tech", 
             projectId: "income-app-d691c",
             storageBucket: "income-app-d691c.firebasestorage.app",
             messagingSenderId: "667278080833",
             appId: "1:667278080833:web:0ca6e35d00e851d378bfc0"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
+
+        // --- App Check Integration ---
+        const appCheck = initializeAppCheck(app, {
+            provider: new ReCaptchaV3Provider('6Lfb8nksAAAAAEmyptjAU4kda-zAmnyriChWfWMx'),
+            isTokenAutoRefreshEnabled: true
+        });
+
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
         let mAns = 0; let sType = ''; let gUser = null;
 
-        // UI Switch
+        // Navigation
         window.show = (id) => {
             document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
@@ -134,23 +151,30 @@
 
         window.toggleGoogle = (s) => document.getElementById('google-panel').classList.toggle('active', s);
 
-        // Generate ID & Math
+        // ID Generator Logic
         async function setupSignup() {
             let id = ""; let unique = false;
             while(!unique) {
                 id = Math.floor(10000000 + Math.random() * 90000000).toString();
-                if(!(await getDoc(doc(db, "users", id))).exists()) unique = true;
+                const docRef = doc(db, "users", id);
+                const docSnap = await getDoc(docRef);
+                if(!docSnap.exists()) unique = true;
             }
             document.getElementById('sup-id').value = id;
             let n1 = Math.floor(Math.random()*10), n2 = Math.floor(Math.random()*10);
             mAns = n1 + n2;
-            document.getElementById('math-ques').innerText = `What is ${n1} + ${n2}?`;
+            document.getElementById('math-ques').innerText = `Security Check: ${n1} + ${n2} = ?`;
         }
 
         window.prepSignup = async (type) => {
             sType = type;
             if(type === 'Google') { toggleGoogle(true); } 
-            else { show('v-signup-form'); document.getElementById('sup-email-fields').classList.remove('hidden'); await setupSignup(); }
+            else { 
+                show('v-signup-form'); 
+                document.getElementById('sup-email-fields').classList.remove('hidden'); 
+                document.getElementById('sup-title').innerText = "Signup with Email";
+                await setupSignup(); 
+            }
         }
 
         window.loginWithGoogle = async () => {
@@ -159,44 +183,62 @@
                 toggleGoogle(false);
                 const q = query(collection(db, "users"), where("email", "==", res.user.email));
                 const snap = await getDocs(q);
-                if(!snap.empty) { snap.forEach(d => loadDash(d.data())); }
-                else { 
-                    gUser = res.user; show('v-signup-form'); 
+                if(!snap.empty) { 
+                    snap.forEach(d => loadDash(d.data())); 
+                } else { 
+                    gUser = res.user; 
+                    show('v-signup-form'); 
+                    document.getElementById('sup-title').innerText = "Complete Google Signup";
                     document.getElementById('sup-name').value = gUser.displayName;
                     document.getElementById('sup-email-fields').classList.add('hidden');
                     await setupSignup();
                 }
-            } catch (e) { alert(e.message); }
+            } catch (e) { alert("Auth Error: " + e.message); }
         }
 
         window.processSignup = async () => {
             let name = document.getElementById('sup-name').value;
             let id = document.getElementById('sup-id').value;
             let ans = document.getElementById('math-ans').value;
-            if(!name || parseInt(ans) !== mAns) return alert("Fill data correctly & solve math!");
+            
+            if(!name) return alert("Please enter your name");
+            if(parseInt(ans) !== mAns) {
+                alert("Incorrect Math Answer!");
+                let n1 = Math.floor(Math.random()*10), n2 = Math.floor(Math.random()*10);
+                mAns = n1 + n2;
+                document.getElementById('math-ques').innerText = `Security Check: ${n1} + ${n2} = ?`;
+                return;
+            }
 
             try {
                 let email = "", aid = "";
-                if(gUser) { email = gUser.email; aid = gUser.uid; }
-                else {
+                if(gUser) { 
+                    email = gUser.email; aid = gUser.uid; 
+                } else {
                     email = document.getElementById('sup-email').value;
                     let p = document.getElementById('sup-pass').value;
+                    let cp = document.getElementById('sup-conf').value;
+                    if(p !== cp) return alert("Passwords do not match!");
                     let res = await createUserWithEmailAndPassword(auth, email, p);
                     aid = res.user.uid;
                 }
-                const data = { name, uId: id, email, authId: aid };
+                const data = { name, uId: id, email, authId: aid, createdAt: new Date() };
                 await setDoc(doc(db, "users", id), data);
                 loadDash(data);
-            } catch (e) { alert(e.message); }
+            } catch (e) { alert("Signup Failed: " + e.message); }
         }
 
         window.handleEmailLogin = async () => {
+            let e = document.getElementById('log-email').value;
+            let p = document.getElementById('log-pass').value;
+            if(!e || !p) return alert("Enter email and password");
             try {
-                let res = await signInWithEmailAndPassword(auth, document.getElementById('log-email').value, document.getElementById('log-pass').value);
+                let res = await signInWithEmailAndPassword(auth, e, p);
                 const q = query(collection(db, "users"), where("authId", "==", res.user.uid));
                 const snap = await getDocs(q);
-                snap.forEach(d => loadDash(d.data()));
-            } catch (e) { alert("Login Failed!"); }
+                if(!snap.empty) { snap.forEach(d => loadDash(d.data())); }
+                else { alert("User data not found in Database!"); }
+            } catch (e) { alert("Login Error: User not found or wrong password."); }
         }
 
         function loadDash(d) {
