@@ -1,251 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnTech - Secured PTC Platform</title>
+    <title>CyberEarn Elite - High-End System</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2563eb; --success: #16a34a; --bg: #f3f4f6; }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; overflow: hidden; }
-
-        /* Google Slide-up Panel (Vertical Half Screen) */
-        #google-panel {
-            position: fixed; bottom: -60%; left: 0; width: 100%; height: 50vh;
-            background: white; border-top: 5px solid var(--primary);
-            z-index: 1000; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 -8px 30px rgba(0,0,0,0.15);
+        :root {
+            --primary: #00f2ff;
+            --secondary: #ff007a;
+            --success: #00ff88;
+            --warning: #ffbd00;
+            --bg: #040406;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
-        #google-panel.active { bottom: 0; }
-        .close-panel { position: absolute; top: 15px; right: 20px; font-size: 28px; color: #ff4444; cursor: pointer; font-weight: bold; }
 
-        /* Container UI */
-        .container { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.08); position: relative; z-index: 10; }
-        .btn { display: block; width: 100%; padding: 14px; margin: 12px 0; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .btn-google { background: #ea4335; color: white; }
-        .btn-email { background: #1a1a1a; color: white; }
-        .btn-submit { background: var(--success); color: white; margin-top: 20px; }
-        .btn-back { background: #f0f0f0; width: auto; font-size: 13px; padding: 6px 16px; margin-bottom: 15px; border-radius: 20px; color: #555; }
-        
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; font-size: 15px; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1); }
-        
-        .footer-text { font-size: 14px; color: #666; margin-top: 20px; }
-        .link { color: var(--primary); cursor: pointer; font-weight: 700; text-decoration: none; }
-        .hidden { display: none; }
-        
-        #math-box { background: #f8fafc; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px dashed #cbd5e1; }
-        #math-ques { font-size: 18px; color: #334155; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .g-recaptcha-badge { visibility: hidden; } /* reCAPTCHA লোগো হাইড করা (অপশনাল) */
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 122, 0.05) 0%, transparent 40%);
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            user-select: none;
+        }
+
+        /* প্রফেশনাল হেডার */
+        header {
+            padding: 20px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .avatar {
+            width: 45px; height: 45px; border-radius: 12px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            padding: 2px;
+        }
+        .avatar img { width: 100%; height: 100%; border-radius: 10px; background: #000; }
+
+        .balance-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 8px 15px; border-radius: 12px;
+            text-align: right;
+        }
+        .balance-val { font-family: 'Orbitron', sans-serif; color: var(--success); font-size: 18px; }
+
+        .container { max-width: 500px; margin: 0 auto; padding: 25px 20px; }
+
+        .status-header {
+            text-align: center; margin-bottom: 25px;
+        }
+        .status-header h2 { font-size: 20px; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; }
+
+        /* গ্রিড সিস্টেম */
+        .task-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+        .task-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 5px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .active { border-color: var(--primary); cursor: pointer; background: rgba(0, 242, 255, 0.05); }
+        .active:hover { transform: scale(1.05); border-color: #fff; }
+
+        .waiting { border-color: var(--warning); opacity: 0.8; }
+        .done { opacity: 0.3; border-color: var(--success); }
+        .locked { opacity: 0.15; }
+
+        .icon { font-size: 22px; margin-bottom: 8px; display: block; }
+        .label { font-size: 10px; color: #888; text-transform: uppercase; }
+        .id-num { font-family: 'Orbitron', sans-serif; font-size: 16px; display: block; margin: 3px 0; }
+        .timer-label { font-size: 9px; font-weight: 800; color: var(--warning); }
+
+        /* লিমিট ওভারলে */
+        #limit-overlay {
+            display: none; position: fixed; inset: 0; background: var(--bg);
+            z-index: 5000; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px;
+        }
+        .countdown { font-family: 'Orbitron', sans-serif; font-size: 45px; color: var(--secondary); margin: 20px 0; }
+
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #fff; color: #000; padding: 12px 25px; border-radius: 10px;
+            font-size: 13px; font-weight: 700; display: none; z-index: 6000;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Bottom Google Authentication Panel -->
-    <div id="google-panel">
-        <span class="close-panel" onclick="toggleGoogle(false)">×</span>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="40" alt="Google">
-        <h3 style="margin: 15px 0 5px;">Secure Login</h3>
-        <p style="color: #666; font-size: 14px;">Continue to your account securely</p>
-        <button class="btn btn-google" style="width: 80%" onclick="loginWithGoogle()">Sign in with Google</button>
-    </div>
+<div id="limit-overlay">
+    <div style="font-size: 60px;">🌌</div>
+    <h2 style="margin-top:20px;">DAILY QUOTA FINISHED</h2>
+    <p style="color: #666;">আপনি আজকের ৪০টি ভিজিট সম্পন্ন করেছেন।</p>
+    <div class="countdown" id="midnight-timer">00:00:00</div>
+    <p style="color: var(--primary);">আগামীকাল নতুন লেভেল আনলক হবে</p>
+</div>
 
-    <div class="container">
-        <!-- View 1: Main Landing -->
-        <div id="v-login">
-            <h2 style="margin-bottom: 25px;">Welcome Back</h2>
-            <button class="btn btn-google" onclick="toggleGoogle(true)">Login with Google</button>
-            <button class="btn btn-email" onclick="show('v-email-login')">Login with Email</button>
-            <p class="footer-text">do not any account, <span class="link" onclick="show('v-signup-main')">jast signup</span></p>
+<header>
+    <div class="user-info">
+        <div class="avatar">
+            <img src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Felix" alt="User">
         </div>
-
-        <!-- View 2: Email Login Form -->
-        <div id="v-email-login" class="hidden">
-            <button class="btn btn-back" onclick="show('v-login')">← Back</button>
-            <h2>Email Login</h2>
-            <input type="email" id="log-email" placeholder="Email address">
-            <input type="password" id="log-pass" placeholder="Password">
-            <button class="btn btn-submit" onclick="handleEmailLogin()">Sign In</button>
-            <p class="footer-text">do not any account, <span class="link" onclick="show('v-signup-main')">jast signup</span></p>
-        </div>
-
-        <!-- View 3: Signup Choice -->
-        <div id="v-signup-main" class="hidden">
-            <h2>Create Account</h2>
-            <button class="btn btn-google" onclick="prepSignup('Google')">Signup with Google</button>
-            <button class="btn btn-email" onclick="prepSignup('Email')">Signup with Email</button>
-            <p class="footer-text">I have olready account, <span class="link" onclick="show('v-login')">jast Login</span></p>
-        </div>
-
-        <!-- View 4: Detailed Signup Form -->
-        <div id="v-signup-form" class="hidden">
-            <button class="btn btn-back" onclick="show('v-signup-main')">← Back</button>
-            <h2 id="sup-title">Join Us</h2>
-            <input type="text" id="sup-name" placeholder="Enter Full Name">
-            <input type="text" id="sup-id" readonly style="background: #f9f9f9; cursor: not-allowed;" placeholder="Generating Unique ID...">
-            
-            <div id="sup-email-fields" class="hidden">
-                <input type="email" id="sup-email" placeholder="Email Address">
-                <input type="password" id="sup-pass" placeholder="Password">
-                <input type="password" id="sup-conf" placeholder="Confirm Password">
-            </div>
-
-            <div id="math-box">
-                <div id="math-ques"></div>
-                <input type="number" id="math-ans" placeholder="Enter result">
-            </div>
-
-            <button class="btn btn-submit" onclick="processSignup()">Complete Signup</button>
-            <p class="footer-text">I have olready account, <span class="link" onclick="show('v-login')">jast Login</span></p>
-        </div>
-
-        <!-- View 5: Dashboard Demo -->
-        <div id="v-dash" class="hidden">
-            <div style="background: #dcfce7; color: #166534; padding: 10px; border-radius: 8px; margin-bottom: 20px;">✓ Registration Successful!</div>
-            <h2>Dashboard</h2>
-            <div style="text-align:left; background:#f8fafc; padding:20px; border-radius:12px; border: 1px solid #e2e8f0;">
-                <p><b>Name:</b> <span id="d-name"></span></p>
-                <p><b>User ID:</b> <span id="d-id" style="color: var(--primary); font-family: monospace; font-size: 18px;"></span></p>
-            </div>
-            <button class="btn btn-email" onclick="location.reload()">Log Out</button>
+        <div>
+            <b style="font-size: 14px; display: block;">AGENT_77X</b>
+            <span style="font-size: 10px; color: #666;">ID: 9948271</span>
         </div>
     </div>
+    <div class="balance-card">
+        <span style="font-size: 9px; color: #888; display: block;">EARNINGS</span>
+        <div class="balance-val"><span id="zym-bal">0</span> ZYM</div>
+    </div>
+</header>
 
-    <!-- Firebase Scripts -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<div class="container">
+    <div class="status-header">
+        <h2 id="level-title">LEVEL: 1 - 40</h2>
+        <p style="font-size: 12px; color: #555;">Sequential Node Activation</p>
+    </div>
+    <div class="task-grid" id="taskGrid"></div>
+</div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBvRdNBtvE5O9yAKSH1gILL2Hd19re-t7Q",
-            authDomain: "open.earntech.raybil.tech", 
-            projectId: "income-app-d691c",
-            storageBucket: "income-app-d691c.firebasestorage.app",
-            messagingSenderId: "667278080833",
-            appId: "1:667278080833:web:0ca6e35d00e851d378bfc0"
-        };
+<div id="toast"></div>
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
+<script>
+    // লিংকসমূহ
+    const links = [
+        "https://www.effectivegatecpm.com/d4xmbr9x?key=2b5a0e093b7322fd95cdb255b75f8d19",
+        "https://omg10.com/4/10417851",
+        "https://www.effectivegatecpm.com/hcux3wbqsd?key=67b7104cd6484dba058f498324eaafb8",
+        "https://omg10.com/4/10417853"
+    ];
 
-        // --- App Check Integration ---
-        const appCheck = initializeAppCheck(app, {
-            provider: new ReCaptchaV3Provider('6Lfb8nksAAAAAEmyptjAU4kda-zAmnyriChWfWMx'),
-            isTokenAutoRefreshEnabled: true
-        });
+    // --- LocalStorage ডেটা ---
+    let balance = parseInt(localStorage.getItem('zym_bal')) || 0;
+    let doneToday = parseInt(localStorage.getItem('zym_done')) || 0; // ০ থেকে ৪০
+    let lastClick = parseInt(localStorage.getItem('zym_last_time')) || 0;
+    let baseOffset = parseInt(localStorage.getItem('zym_base_id')) || 0; // ০, ৪০, ৮০...
+    let lastResetDate = localStorage.getItem('zym_date');
 
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
-
-        let mAns = 0; let sType = ''; let gUser = null;
-
-        // Navigation
-        window.show = (id) => {
-            document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        window.toggleGoogle = (s) => document.getElementById('google-panel').classList.toggle('active', s);
-
-        // ID Generator Logic
-        async function setupSignup() {
-            let id = ""; let unique = false;
-            while(!unique) {
-                id = Math.floor(10000000 + Math.random() * 90000000).toString();
-                const docRef = doc(db, "users", id);
-                const docSnap = await getDoc(docRef);
-                if(!docSnap.exists()) unique = true;
+    function checkReset() {
+        const today = new Date().toDateString();
+        if (lastResetDate !== today) {
+            // যদি আজকে নতুন দিন হয়
+            if (lastResetDate !== null) {
+                // গতদিনের ৪০টি শেষ হয়েছিল কিনা চেক করে অফসেট বাড়ানো
+                baseOffset += 40;
+                localStorage.setItem('zym_base_id', baseOffset);
             }
-            document.getElementById('sup-id').value = id;
-            let n1 = Math.floor(Math.random()*10), n2 = Math.floor(Math.random()*10);
-            mAns = n1 + n2;
-            document.getElementById('math-ques').innerText = `Security Check: ${n1} + ${n2} = ?`;
+            doneToday = 0;
+            localStorage.setItem('zym_done', 0);
+            localStorage.setItem('zym_date', today);
+        }
+    }
+
+    function updateMidnightTimer() {
+        const now = new Date();
+        const midnight = new Date();
+        midnight.setHours(24, 0, 0, 0);
+        const diff = midnight - now;
+
+        if (diff <= 0) { location.reload(); return; }
+
+        const h = Math.floor(diff / 3600000).toString().padStart(2,'0');
+        const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2,'0');
+        const s = Math.floor((diff % 60000) / 1000).toString().padStart(2,'0');
+        document.getElementById('midnight-timer').innerText = `${h}:${m}:${s}`;
+    }
+
+    function render() {
+        checkReset();
+        document.getElementById('zym-bal').innerText = balance;
+        document.getElementById('level-title').innerText = `LEVEL: ${baseOffset + 1} - ${baseOffset + 40}`;
+
+        if (doneToday >= 40) {
+            document.getElementById('limit-overlay').style.display = 'flex';
+            updateMidnightTimer();
+            return;
         }
 
-        window.prepSignup = async (type) => {
-            sType = type;
-            if(type === 'Google') { toggleGoogle(true); } 
-            else { 
-                show('v-signup-form'); 
-                document.getElementById('sup-email-fields').classList.remove('hidden'); 
-                document.getElementById('sup-title').innerText = "Signup with Email";
-                await setupSignup(); 
-            }
-        }
+        const grid = document.getElementById('taskGrid');
+        grid.innerHTML = '';
+        const now = Date.now();
+        const elapsed = now - lastClick;
+        const isLockedByTimer = elapsed < 40000;
 
-        window.loginWithGoogle = async () => {
-            try {
-                const res = await signInWithPopup(auth, provider);
-                toggleGoogle(false);
-                const q = query(collection(db, "users"), where("email", "==", res.user.email));
-                const snap = await getDocs(q);
-                if(!snap.empty) { 
-                    snap.forEach(d => loadDash(d.data())); 
-                } else { 
-                    gUser = res.user; 
-                    show('v-signup-form'); 
-                    document.getElementById('sup-title').innerText = "Complete Google Signup";
-                    document.getElementById('sup-name').value = gUser.displayName;
-                    document.getElementById('sup-email-fields').classList.add('hidden');
-                    await setupSignup();
-                }
-            } catch (e) { alert("Auth Error: " + e.message); }
-        }
+        for (let i = 0; i < 40; i++) {
+            const card = document.createElement('div');
+            card.className = 'task-card';
+            const currentId = baseOffset + i + 1;
 
-        window.processSignup = async () => {
-            let name = document.getElementById('sup-name').value;
-            let id = document.getElementById('sup-id').value;
-            let ans = document.getElementById('math-ans').value;
-            
-            if(!name) return alert("Please enter your name");
-            if(parseInt(ans) !== mAns) {
-                alert("Incorrect Math Answer!");
-                let n1 = Math.floor(Math.random()*10), n2 = Math.floor(Math.random()*10);
-                mAns = n1 + n2;
-                document.getElementById('math-ques').innerText = `Security Check: ${n1} + ${n2} = ?`;
-                return;
-            }
-
-            try {
-                let email = "", aid = "";
-                if(gUser) { 
-                    email = gUser.email; aid = gUser.uid; 
+            if (i < doneToday) {
+                // সম্পন্ন হয়েছে
+                card.classList.add('done');
+                card.innerHTML = `<span class="icon">✅</span><span class="label">Visit</span><span class="id-num">${currentId}</span>`;
+            } 
+            else if (i === doneToday) {
+                // বর্তমান টার্গেট বক্স
+                if (isLockedByTimer) {
+                    card.classList.add('waiting');
+                    const rem = Math.ceil((40000 - elapsed) / 1000);
+                    card.innerHTML = `<span class="icon">⏳</span><span class="label">Wait</span><span class="id-num">${currentId}</span><span class="timer-label">${rem}s</span>`;
                 } else {
-                    email = document.getElementById('sup-email').value;
-                    let p = document.getElementById('sup-pass').value;
-                    let cp = document.getElementById('sup-conf').value;
-                    if(p !== cp) return alert("Passwords do not match!");
-                    let res = await createUserWithEmailAndPassword(auth, email, p);
-                    aid = res.user.uid;
+                    card.classList.add('active');
+                    card.innerHTML = `<span class="icon">⚡</span><span class="label">Active</span><span class="id-num">${currentId}</span>`;
+                    
+                    // --- আপডেট করা নির্দিষ্ট সেকশন ---
+                    card.onclick = () => {
+                        const targetLink = links[Math.floor(Math.random()*links.length)];
+                        
+                        // টেলিগ্রাম এক্সটারনাল ব্রাউজারে খোলার জন্য
+                        if (window.Telegram && window.Telegram.WebApp) {
+                            window.Telegram.WebApp.openLink(targetLink);
+                        } else {
+                            window.open(targetLink, '_blank');
+                        }
+                        
+                        balance += 10;
+                        doneToday++;
+                        lastClick = Date.now();
+                        
+                        localStorage.setItem('zym_bal', balance);
+                        localStorage.setItem('zym_done', doneToday);
+                        localStorage.setItem('zym_last_time', lastClick);
+                        render();
+                    };
+                    // --- আপডেট শেষ ---
                 }
-                const data = { name, uId: id, email, authId: aid, createdAt: new Date() };
-                await setDoc(doc(db, "users", id), data);
-                loadDash(data);
-            } catch (e) { alert("Signup Failed: " + e.message); }
+            } 
+            else {
+                // ভবিষ্যতের লক করা বক্স
+                card.classList.add('locked');
+                card.innerHTML = `<span class="icon">🔒</span><span class="label">Locked</span><span class="id-num">${currentId}</span>`;
+            }
+            grid.appendChild(card);
         }
+    }
 
-        window.handleEmailLogin = async () => {
-            let e = document.getElementById('log-email').value;
-            let p = document.getElementById('log-pass').value;
-            if(!e || !p) return alert("Enter email and password");
-            try {
-                let res = await signInWithEmailAndPassword(auth, e, p);
-                const q = query(collection(db, "users"), where("authId", "==", res.user.uid));
-                const snap = await getDocs(q);
-                if(!snap.empty) { snap.forEach(d => loadDash(d.data())); }
-                else { alert("User data not found in Database!"); }
-            } catch (e) { alert("Login Error: User not found or wrong password."); }
-        }
-
-        function loadDash(d) {
-            document.getElementById('d-name').innerText = d.name;
-            document.getElementById('d-id').innerText = d.uId;
-            show('v-dash');
-        }
-    </script>
+    setInterval(render, 1000);
+    render();
+</script>
 </body>
 </html>
